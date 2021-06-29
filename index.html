@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+    <div id="app">
+        <div class="header-top d-flex justify-content-between">
+            <div>
+                <p>Menu</p>
+            </div>
+            <div>
+                <p>profile</p>
+            </div>
+        </div>
+        <div class="content">
+            <div>
+                <h3 class="title-content"><strong>Danh sách công việc</strong></h3>
+            </div>
+            <div class="ngcontent">
+                <input type="text" placeholder="Tìm kiếm theo từ khóa" v-on:keyup="search">
+                <select name="" id="">
+                    <option value="0">Tất cả</option>
+                </select>
+                <button>Tìm kiếm</button>
+            </div>
+            <div class="ngcontent1">
+                <a href="">Tất cả công việc</a>
+                <a href="">Công việc đã lưu</a>
+                <a href="">Bộ sưu tập công việc</a>
+            </div>
+            <div class="content-fillter d-flex justify-content-between">
+                <span>Lọc theo</span>
+                <div>
+                    <select name="" id="" @change="filter_Area">
+                        <option value="0">Tất cả khu vực</option>
+                        <option value="1">Hồ Chí Minh</option>
+                        <option value="2">Hà Nội</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="" id="">
+                        <option value="0">Tất cả Mức lương</option>
+                        <option value="1">Hồ Chí Minh</option>
+                        <option value="2">Hà Nội</option>
+                    </select>
+                </div>
+
+                <div>
+                    <select name="" id="">
+                        <option value="0">Tất cả Loại công việc</option>
+                        <option value="1">Hồ Chí Minh</option>
+                        <option value="2">Hà Nội</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="" id="">
+                        <option value="0">Tất cả Công ty</option>
+                        <option value="1">Hồ Chí Minh</option>
+                        <option value="2">Hà Nội</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="" id="">
+                        <option value="0">Active</option>
+                        <option value="1">Hồ Chí Minh</option>
+                        <option value="2">Hà Nội</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="checkbox">Tuyển gấp
+                </div>
+                <div>
+                    <input type="checkbox">Thưởng khi phỏng vấn
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="col-8 p-0">
+                    <div class="content-paging d-flex justify-content-between">
+                        <button>Chia sẻ</button>
+                        <div class="d-flex justify-content-center align-items-center flex-wrap">
+                            <div class="d-flex flex-wrap mr-3">
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">Trước</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">23</a>
+                                <a href="#"
+                                    class="btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2">24</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">25</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">26</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">27</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">28</a>
+                                <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2">Sau</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="amount-of-word">{{info.length}} Việc làm phù hợp</h5>
+                        <div d-flex>
+                            <span class="sort-by">Sắp xếp theo: </span>
+                            <select name="" id="" @change="sortChange($event)">
+                                <option value="0">Mặc định</option>
+                                <option value="1">Tên job</option>
+                                <option value="2">Tên công ty</option>
+                                <option value="3">Mức lương(Thấp - Cao)</option>
+                                <option value="4">Mức lương(Cap - Thấp)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex card-content" v-for="item in info">
+                       
+                        <div class="thumbnail-logo">
+                            <img :src="item.img"
+                                alt="">
+                        </div>
+                        <div class="content-right w-100">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <span>{{ item.job_name }}</span>
+                                        <button><i class="fas fa-copy"></i></button>
+                                    </div>
+                                    <div class="card-info">
+                                        <strong>{{ item.company_name }}</strong>
+                                        <span>Số lượng tuyển: {{item.number_of_people_employed}} | Đang xử lý:
+                                            {{item.processing}}</span>
+                                    </div>
+                                    <div>
+                                        <span>Thưởng <strong class="bonus">{{item.bonus}} VNĐ </strong>/ ứng viên</span>
+                                        <div class="d-flex card-bottom">
+                                            <div class="card-info">
+                                                <span>Thưởng phỏng vấn</span>
+                                                <strong>{{item.interview_bonus}} VNĐ/phỏng vấn</strong>
+                                            </div>
+                                            <div class="card-info">
+                                                <span>Mức lương</span>
+                                                <strong>${{item.wage}}</strong>
+                                            </div>
+                                            <div class="card-info">
+                                                <span>Địa chỉ</span>
+                                                <strong>{{item.address}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        <div class="d-flex flex-wrap py-2 mr-3">
+                            <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i
+                                    class="ki ki-bold-double-arrow-back icon-xs"></i></a>
+                            <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i
+                                    class="ki ki-bold-arrow-back icon-xs"></i></a>
+
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1" @click="onClickFirstPage">Trước</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">23</a>
+                            <a href="#"
+                                class="btn btn-icon btn-sm border-0 btn-light btn-hover-primary active mr-2 my-1">24</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">25</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">26</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">27</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">28</a>
+                            <a href="#" class="btn btn-icon btn-sm border-0 btn-light mr-2 my-1">Sau</a>
+
+                            <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i
+                                    class="ki ki-bold-arrow-next icon-xs"></i></a>
+                            <a href="#" class="btn btn-icon btn-sm btn-light mr-2 my-1"><i
+                                    class="ki ki-bold-double-arrow-next icon-xs"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="donors">
+                        <a href="">Việc làm fresher</a>
+                        <img src="https://static.recruitery.co/uploads/images/f4b565e3085e4d2db851d6cf59338c09_20200921160752.jpg"
+                            alt="">
+                    </div>
+                    <div class="donors">
+                        <a href="">Việc làm fresher</a>
+                        <img src="https://static.recruitery.co/uploads/images/43525c304c3740f9a42f71f0fb371b59_20201112165022.jpg"
+                            alt="">
+                    </div>
+                    <div class="donors">
+                        <a href="">Danh sách khu vực Đông Nam Á - Mới nhất</a>
+                        <img src="https://static.recruitery.co/uploads/images/d4d0d69f33404ca8b0959ae2825b08a8_20201125142500.png"
+                            alt="">
+                    </div>
+                    <div class="donors">
+                        <a href="">Việc làm remote 2021 - Recruitery</a>
+                        <img src="https://static.recruitery.co/uploads/images/ef827cdf916d4faba58c5e99836d0cb4_20210406114212.png"
+                            alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="footer text-center">
+                <div>
+                    <b>Hotline <a href="">0937320571</a></b>
+                    <span>|</span>
+                    <b>Email <a href="">datnguyen@gmail.com</a></b>
+                </div>
+                <div>
+                    Copyright © 2018-2021
+                    <b><a href="">Recruitery</a><span>All rights reserved</span></b>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>     
+        
+        var app = new Vue({
+            el: '#app',
+            data: {
+                info: [
+            {
+                id: 1,
+                job_name: "Fresher PHP",
+                company_name: "Vidiva Technology",
+                number_of_people_employed: 1,
+                processing: 6,
+                bonus: 7000000,
+                interview_bonus: 350000,
+                wage: 100,
+                address: "Ha Noi",
+                area: 29,
+                img: "https://static.recruitery.co/uploads/images/ec015e8079fd439db759d02dd8a7cd84_20201105114215.jpg"
+            },
+            {
+                id: 2,
+                job_name: "Customer service manager",
+                company_name: "Vidiva Technology",
+                number_of_people_employed: 1,
+                processing: 6,
+                bonus: 7000000,
+                interview_bonus: 350000,
+                wage: 300,
+                address: "Ho Chi Minh",
+                area: 59,
+                img: "https://static.recruitery.co/uploads/images/9e639658efcc45e78c5369fbcba9da7c_20210128162224.png"
+            },
+            {
+                id: 3,
+                job_name: "Fresher FrontEnd Developer",
+                company_name: "Eplus",
+                number_of_people_employed: 1,
+                processing: 6,
+                bonus: 7000000,
+                interview_bonus: 350000,
+                wage: 200,
+                address: "Ho Chi Minh",
+                area: 59,
+                img: "https://static.recruitery.co/uploads/images/861a2543b13b4407989f851df72e7d01_20191108122718.jpg"
+            },
+            {
+                id: 4,
+                job_name: "Fresher Nodejs Developer",
+                company_name: "Eplus",
+                number_of_people_employed: 1,
+                processing: 6,
+                bonus: 7000000,
+                interview_bonus: 350000,
+                wage: 400,
+                address: "Ho Chi Minh",
+                area: 59,
+                img: "https://static.recruitery.co/uploads/images/08ab20c97c8b4d2783065d01072f0839_20210514101545.jpeg"
+            }
+        ],
+                click: true,
+                sortArr: [],
+                defaultData:[],
+            },
+            // watch: {
+            //     'defaultData'(newValue,oldValue){
+            //         if(newValue) return false
+            //     }
+            // },
+            mounted(){
+                this.defaultData  = {...this.info}
+            },
+            methods: {
+                sortChange(e) {
+              
+                    if (e.target.value == 1) {
+                     
+                        this.info.sort( (a, b) => {
+                            var nameA = a.job_name.toUpperCase(); // ignore upper and lowercase
+                            var nameB = b.job_name.toUpperCase(); // ignore upper and lowercase
+                            if (nameA < nameB) {
+                                return -1;
+                            }
+                            if (nameA > nameB) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                    }
+                    else if (e.target.value == 0) {
+                
+                        this.info = Object.values(this.defaultData)
+                    }
+                    else if(e.target.value==3){
+                        this.info.sort(function(a,b){
+                            var A = a.wage;
+                            var B = b.wage;
+                            if(A<B){
+                                return -1;
+                            }
+                            if(A>B){
+                                return 1;
+                            }
+                            return 0;
+                        });
+                    }
+                    else if(e.target.value==4){
+                       
+                        this.info.sort(function(a,b){
+                            var A = a.wage;
+                            var B = b.wage;
+                            if(A<B){
+                                return 1;
+                            }
+                            if(A>B){
+                                return -1;
+                            }
+                            return 0;
+                        });
+                    }
+                },
+                filter_Area(e){
+                    if(e.target.value==1){
+                        return this.info = Object.values(this.defaultData).filter(area => area.area==59)
+                    }
+                    else if(e.target.value==0){
+                        return this.info = Object.values(this.defaultData)
+                    }
+                    else{
+                        return this.info = Object.values(this.defaultData).filter(area => area.area==29)
+                    }
+                    // console.log(e.target.value)
+                },
+                onClickFirstPage(){
+                    alert("aaa");
+                },
+                search(e){
+                    // console.log(e.target.value)
+                    let searchVal = Object.values(this.defaultData);
+                    console.log(searchVal[0])
+                    console.log(searchVal[0].job_name.includes(e.target.value));
+                    if(e.target.value!='' && searchVal[0].job_name.includes(e.target.value)){
+                        return this.info = Object.values(this.defaultData).filter(area => area.area==29)
+                }
+                    else
+                    return this.info = Object.values(this.defaultData);
+                    
+                }
+            },
+            
+        });
+    </script>
+</body>
+
+</html>
